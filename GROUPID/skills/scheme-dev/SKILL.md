@@ -151,26 +151,67 @@ The output must match the PDF character for character. For S2, append
 raco test tests/test_q3.rkt               # expect: N tests passed
 ```
 
-`tests/test_qN.rkt` is its own `#lang racket/base` module. It loads the code
-file without changing it (code files have no `provide`), captures what each
-function prints, and compares that with the exact expected text, newline
-included:
+`tests/test_qN.rkt` is its own `#lang racket/base` module. It tests the code
+exactly the way the grader runs it. For each case it:
+
+1. copies the code file, unchanged, to a fresh temp file;
+2. adds the grader-style text at the end: the definitions (for example
+   `(define t1 '(...))`) and then the calls (for S2, `(print-insert-result)`);
+3. runs `racket <copy>` as a separate process (for S2, with the case's input
+   on stdin);
+4. compares the whole result exactly: stdout must be the expected lines, each
+   ending in one newline, stderr must be empty and the exit code must be 0;
+5. deletes the temp file, even if the run failed.
+
+It also checks the file itself: line 1 is `#lang racket/base`, the file ends
+with a newline, and running the code file on its own prints nothing. The S1
+PDF examples define their trees under the PDF's own names (`t1`, `t2`,
+`t3`), so if the code file defines one of those names itself, the clash
+shows up as a failure.
+
+The core of `tests/test_q3.rkt`:
 
 ```racket
 #lang racket/base
-(require rackunit racket/port racket/runtime-path)
+(require rackunit racket/port racket/file racket/system racket/runtime-path)
 (define-runtime-path code-file "../code/id_q3.rkt")
-(dynamic-require code-file #f)                  ; load the code module
-(define code-ns (module->namespace code-file))  ; reach its definitions
-(define (fn name) (eval name code-ns))
-(define (output-of thunk) (with-output-to-string thunk))
-;; (check-equal? (output-of (lambda () ((fn 'print-inorder) '()))) "()\n")
+(define code-text (call-with-input-file code-file port->string))
+(define racket-exe (find-executable-path "racket"))
+
+;; (run-racket file) -> (list stdout stderr exit-code)
+(define (run-racket file)
+  (define out (open-output-string))
+  (define err (open-output-string))
+  (define code
+    (parameterize ([current-input-port (open-input-string "")]
+                   [current-output-port out]
+                   [current-error-port err])
+      (system*/exit-code racket-exe file)))
+  (list (get-output-string out) (get-output-string err) code))
+
+;; (run-with-calls calls) -> the code file plus calls in a temp copy, run
+(define (run-with-calls calls)
+  (define copy (make-temporary-file "test_q3_~a.rkt"))
+  (dynamic-wind
+   void
+   (lambda ()
+     (call-with-output-file copy #:exists 'truncate
+       (lambda (port)
+         (write-string code-text port)
+         (write-string calls port)))
+     (run-racket copy))
+   (lambda () (delete-file copy))))
+
+;; (check-equal? (run-with-calls "(print-inorder '())\n") (list "()\n" "" 0))
 ```
 
+`tests/test_q4.rkt` works the same way and also writes each case's input to
+the run's stdin.
+
 Group choice: the PDF's built-in list applies to the solution files in
-`code/`. Test files may use `rackunit`, `racket/port` and
-`racket/runtime-path`, because capturing printed output needs them and tests
-are not part of the solution.
+`code/`. Test files may use `rackunit`, `racket/port`, `racket/file`,
+`racket/system` and `racket/runtime-path`, because running the code the way
+the grader does needs them and tests are not part of the solution.
 
 Tests cover every example in the PDF plus our own edge cases: empty input,
 a single element, lopsided or deep input, and long input. If running
