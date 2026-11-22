@@ -37,6 +37,22 @@
         (walk (node-left t)
               (cons (node-value t) (walk (node-right t) acc))))))
 
+;; (preorder tree) -> list
+;; Returns the values of tree in preorder: node, left subtree, right subtree.
+;; Reading: (walk t acc) gives the preorder values of t followed by acc.
+;; Walking () gives acc unchanged. Walking a node first walks the right
+;; subtree onto acc, then walks the left subtree onto that, and finally puts
+;; the node's value in front, so the node comes out before both subtrees.
+;; acc holds the values that come after t in the output. The last step is
+;; the cons, so neither call to walk is a tail call; the recursion only goes
+;; as deep as the tree is tall, and no append is needed.
+(define (preorder tree)
+  (let walk ([t tree] [acc '()])
+    (if (null? t)
+        acc
+        (cons (node-value t)
+              (walk (node-left t) (walk (node-right t) acc))))))
+
 ;; (print-inorder tree) -> prints one line
 ;; S1.a: prints the inorder list of tree with display, then a newline.
 ;; Reading: not recursive itself; inorder builds the list and this function
