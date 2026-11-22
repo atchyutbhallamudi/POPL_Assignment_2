@@ -1,4 +1,5 @@
 :- use_module(library(lists)).
+:- use_module(library(aggregate)).
 
 % candidate(-Sol)
 % Sol is a list of four p(Name, Dept, Lang, Project) terms for Alex, Ben,
@@ -96,3 +97,12 @@ main :-
            satisfies([1,2,3,4,5,6,7,8], Sol) )),
     forall(member(p(Name, Dept, Lang, Project), Sol),
            format("~w = [~w, ~w, ~w]~n", [Name, Dept, Lang, Project])).
+
+% count_solutions(+Active, -N)
+% N is the number of candidates that satisfy every clue in the list Active,
+% ignoring all other clues. aggregate_all(count, Goal, N) counts how many
+% times Goal succeeds; candidate/1 gives each assignment once and
+% satisfies/2 succeeds at most once per assignment, so every solution is
+% counted exactly once. Deterministic, and N is 0 when nothing matches.
+count_solutions(Active, N) :-
+    aggregate_all(count, (candidate(Sol), satisfies(Active, Sol)), N).
