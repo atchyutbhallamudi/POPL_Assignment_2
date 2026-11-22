@@ -14,3 +14,35 @@ candidate([p('Alex',  D1, L1, P1),
     permutation([research, development, design, testing], [D1, D2, D3, D4]),
     permutation([python, java, 'c++', javascript], [L1, L2, L3, L4]),
     permutation(['AI', web, embedded, data], [P1, P2, P3, P4]).
+
+% clue(+N, +Sol)
+% Succeeds exactly when clue number N holds in Sol, where Sol is a fully
+% filled-in candidate (every value bound). Each clue uses member/2 to find
+% the one friend it talks about, then checks that friend's other values.
+% Since every value is used exactly once, member/2 can match only one
+% friend. == and \== compare without binding anything, so a clue only
+% checks Sol and never fills it in.
+
+% Clue 1: The friend who prefers the AI project does not work in research
+% and is not Dana.
+clue(1, Sol) :-
+    member(p(Name, Dept, _, 'AI'), Sol),
+    Dept \== research,
+    Name \== 'Dana'.
+
+% Clue 2: Alex does not work in development and does not prefer C++.
+clue(2, Sol) :-
+    member(p('Alex', Dept, Lang, _), Sol),
+    Dept \== development,
+    Lang \== 'c++'.
+
+% Clue 3: The friend working in the testing department likes Python.
+clue(3, Sol) :-
+    member(p(_, testing, Lang, _), Sol),
+    Lang == python.
+
+% Clue 4: Ben prefers web projects and does not work in testing.
+clue(4, Sol) :-
+    member(p('Ben', Dept, _, Project), Sol),
+    Project == web,
+    Dept \== testing.
