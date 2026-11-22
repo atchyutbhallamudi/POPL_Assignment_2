@@ -1,6 +1,6 @@
 ---
 name: prolog-dev
-description: Develop, test, and review SWI-Prolog 9.x predicates for CS F301 Assignment 2, with arithmetic equation checks for P2.
+description: Develop, test, and review SWI-Prolog 9.x predicates for CS F301 Assignment 2, with puzzle checks for P1 and arithmetic equation checks for P2.
 ---
 
 # Prolog development
@@ -46,3 +46,21 @@ Use a success goal that checks the expected value or shape. For a predicate expe
 - Splitting lists at empty sides or recurring without consuming input. Verify that recursive expression splits produce strictly smaller nonempty inputs.
 - Placing a cut or `once/1` in shared enumeration logic and losing valid equations. Check alternatives on backtracking when implementing collection.
 - Relying on default term printing or returning atoms or character codes. Check the required parentheses and verify the string type independently of the rendered characters.
+
+## P1 run and test commands
+
+From the repository root, run the puzzle, count solutions for clues 1 through 8, and run the PlUnit suite.
+
+```powershell
+swipl -q -f GROUPID/code/id_q1.pl -g main -t halt
+swipl -q -f GROUPID/code/id_q1.pl -g "count_solutions([1,2,3,4,5,6,7,8], N), writeln(N)" -t halt
+swipl -q -s GROUPID/tests/test_q1.pl -g run_tests -t halt
+```
+
+To verify the repair, add 9 to the active clue list and check that the count is 1.
+
+## P1 self-review checklist
+
+- Give each numbered clue one separate `clue/2` clause that succeeds exactly when the clue holds on a fully filled-in solution.
+- Put the English clue text in a `% CLUE 9:` comment on the line immediately above the `clue(9, Solution)` clause. Refer to friends only through attribute values.
+- Keep the solver free of `assert`, `retract`, and global variables.
