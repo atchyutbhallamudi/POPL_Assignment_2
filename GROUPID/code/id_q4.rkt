@@ -14,3 +14,21 @@
     (if (null? items)
         acc
         (loop (cdr items) (+ acc 1)))))
+
+;; (my-map f lst) -> list
+;; Applies the one-argument function f to each top-level element of lst and
+;; returns the results as a new list, in the same order.
+;; Reading: mapping f over () gives (); mapping f over a non-empty list
+;; gives (f first-element) in front of the map of the rest.
+;; Done in two tail-recursive passes so long lists use constant stack:
+;; in the first loop acc holds the results so far, newest first; the second
+;; loop moves them one by one from acc onto out, which puts them back in
+;; the original order.
+(define (my-map f lst)
+  (let loop ([items lst] [acc '()])
+    (if (null? items)
+        (let flip ([left acc] [out '()])
+          (if (null? left)
+              out
+              (flip (cdr left) (cons (car left) out))))
+        (loop (cdr items) (cons (f (car items)) acc)))))
