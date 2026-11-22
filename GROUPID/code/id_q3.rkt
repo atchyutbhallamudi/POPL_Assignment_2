@@ -76,3 +76,17 @@
 (define (print-inorder tree)
   (display (inorder tree))
   (newline))
+
+;; (print-all-traversals tree) -> prints three lines
+;; S1.b: prints the inorder, preorder and postorder lists of tree, in that
+;; order, each with display and followed by a newline.
+;; Reading: not recursive itself; the three traversal helpers build the
+;; lists and this function only prints them one per line. (newline) is the
+;; last expression, so a top-level call prints nothing extra.
+(define (print-all-traversals tree)
+  (display (inorder tree))
+  (newline)
+  (display (preorder tree))
+  (newline)
+  (display (postorder tree))
+  (newline))
