@@ -103,3 +103,18 @@
       0
       (+ 1 (max (height (node-left tree))
                 (height (node-right tree))))))
+
+;; (count-leaves tree) -> number
+;; Returns the number of leaves in tree. A leaf is a node whose left and
+;; right subtrees are both (); the empty tree has no leaves.
+;; Reading: (walk t acc) gives acc plus the number of leaves in t.
+;; Walking () adds nothing, so it gives acc. Walking a leaf adds 1. Walking
+;; any other node counts the left subtree's leaves onto acc first and then
+;; the right subtree's leaves onto that. acc holds the leaves counted so far.
+;; The outer call to walk is a tail call.
+(define (count-leaves tree)
+  (let walk ([t tree] [acc 0])
+    (cond
+      [(null? t) acc]
+      [(and (null? (node-left t)) (null? (node-right t))) (+ acc 1)]
+      [else (walk (node-right t) (walk (node-left t) acc))])))
