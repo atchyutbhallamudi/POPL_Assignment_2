@@ -33,9 +33,9 @@ raco test tests/test_q3.rkt
 raco test tests/test_q4.rkt
 ```
 
-## Who did what
+## Contributors
 
-| Problem | File | Done by |
+| Problem | File | Contributor |
 |---|---|---|
 | P1 Department puzzle | `36_q1.pl` | Atchyut |
 | P2 Arithmetic equation | `36_q2.pl` | Kush |
