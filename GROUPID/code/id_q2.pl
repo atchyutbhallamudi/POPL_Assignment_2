@@ -41,3 +41,16 @@ expression_text(op(Operator, LeftTree, RightTree), Text, Precedence) :-
     ;   RightOperand = RightText
     ),
     format(string(Text), '~s~a~s', [LeftOperand, Operator, RightOperand]).
+
+% generate_equation(+Numbers, -Equation)
+% Holds when Equation is the canonical string of two contiguous nonempty
+% parts of Numbers whose expression trees have the same integer value.
+generate_equation(Numbers, Equation) :-
+    append(LeftNumbers, RightNumbers, Numbers),
+    LeftNumbers = [_|_],
+    RightNumbers = [_|_],
+    expression_tree(LeftNumbers, LeftTree, Value),
+    expression_tree(RightNumbers, RightTree, Value),
+    expression_text(LeftTree, LeftText, _),
+    expression_text(RightTree, RightText, _),
+    format(string(Equation), '~s=~s', [LeftText, RightText]).
