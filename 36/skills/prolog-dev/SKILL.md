@@ -52,9 +52,9 @@ Use a success goal that checks the expected value or shape. For a predicate expe
 From the repository root, run the puzzle, count solutions for clues 1 through 8, and run the PlUnit suite.
 
 ```powershell
-swipl -q -f GROUPID/code/id_q1.pl -g main -t halt
-swipl -q -f GROUPID/code/id_q1.pl -g "count_solutions([1,2,3,4,5,6,7,8], N), writeln(N)" -t halt
-swipl -q -s GROUPID/tests/test_q1.pl -g run_tests -t halt
+swipl -q -f 36/code/36_q1.pl -g main -t halt
+swipl -q -f 36/code/36_q1.pl -g "count_solutions([1,2,3,4,5,6,7,8], N), writeln(N)" -t halt
+swipl -q -s 36/tests/test_q1.pl -g run_tests -t halt
 ```
 
 To verify the repair, add 9 to the active clue list and check that the count is 1.
