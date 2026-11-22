@@ -83,3 +83,16 @@ clue(8, Sol) :-
 % binds nothing.
 satisfies(Active, Sol) :-
     forall(member(N, Active), clue(N, Sol)).
+
+% main/0
+% Prints one solution that satisfies clues 1 to 8 as four lines, in the
+% order Alex, Ben, Carla, Dana, such as "Alex = [research, python, AI]".
+% Nothing is hard-coded: candidate/1 generates assignments and satisfies/2
+% keeps one that passes every clue. once/1 stops after the first such
+% candidate, so exactly one solution is printed. ~w writes atoms without
+% quotes, so 'c++' and 'AI' print as c++ and AI.
+main :-
+    once(( candidate(Sol),
+           satisfies([1,2,3,4,5,6,7,8], Sol) )),
+    forall(member(p(Name, Dept, Lang, Project), Sol),
+           format("~w = [~w, ~w, ~w]~n", [Name, Dept, Lang, Project])).
