@@ -236,7 +236,7 @@ Expect no output. A hit inside a comment can be ignored.
 3. Every identifier is on the allowed list or defined in this file. I checked
    word by word, and the forbidden-name scan printed nothing.
 4. Nothing runs on load: no top-level calls, no example data such as `t1`,
-   no `provide`/`require`. `racket code/id_qN.rkt` printed nothing.
+   no `provide`/`require`. `racket code/36_qN.rkt` printed nothing.
 5. Every function has its comment block: signature, purpose and recursive
    reading (base case, then recursive case).
 6. Empty input is handled first. No `car`, `cdr` or `cadr` is ever applied to
