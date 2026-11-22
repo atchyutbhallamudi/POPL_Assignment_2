@@ -33,26 +33,6 @@
               (flip (cdr left) (cons (car left) out))))
         (loop (cdr items) (cons (f (car items)) acc)))))
 
-;; (insert-if-short x lst n) -> list
-;; Puts x at the front of every list whose length is less than n, at every
-;; level of nesting, lst itself included. A length is always that of the
-;; original list, counted before x is put in.
-;; Reading: an atom element is left as it is. A list (() included) is
-;; handled by first applying the same rule to each of its elements with
-;; my-map, then putting x in front if its original my-length is less than
-;; n. So () has nothing to process and becomes (x) exactly when 0 < n.
-;; The recursion goes only as deep as the nesting; long lists are walked by
-;; my-map and my-length, which are both tail-recursive.
-(define (insert-if-short x lst n)
-  (let ([new-items (my-map (lambda (item)
-                             (if (or (null? item) (pair? item)) ; a sublist
-                                 (insert-if-short x item n)
-                                 item))
-                           lst)])
-    (if (< (my-length lst) n)
-        (cons x new-items)
-        new-items)))
-
 ;; (make-inserter x len-ok?) -> function of one list
 ;; Returns a function that takes a list and puts x at the front of every
 ;; list, at every level of nesting and the given list included, whose
@@ -76,6 +56,17 @@
                     (cons x new-items)
                     new-items)))])
     insert))
+
+;; (insert-if-short x lst n) -> list
+;; Puts x at the front of every list whose length is less than n, at every
+;; level of nesting, lst itself included. A length is always that of the
+;; original list, counted before x is put in.
+;; Reading: not recursive itself; it makes an inserter whose len-ok? is
+;; "the length is less than n" and applies it to lst. The recursion over
+;; the nesting happens inside the function make-inserter returns, so ()
+;; becomes (x) exactly when 0 < n.
+(define (insert-if-short x lst n)
+  ((make-inserter x (lambda (len) (< len n))) lst))
 
 ;; (print-insert-result) -> prints one line
 ;; Reads x, then lst, then n from standard input and prints
