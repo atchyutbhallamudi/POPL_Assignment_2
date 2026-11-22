@@ -54,3 +54,9 @@ generate_equation(Numbers, Equation) :-
     expression_text(LeftTree, LeftText, _),
     expression_text(RightTree, RightText, _),
     format(string(Equation), '~s=~s', [LeftText, RightText]).
+
+% all_equations(+Numbers, -Equations)
+% Equations contains every distinct valid equation string in standard term order.
+all_equations(Numbers, Equations) :-
+    findall(Equation, generate_equation(Numbers, Equation), Solutions),
+    sort(Solutions, Equations).
