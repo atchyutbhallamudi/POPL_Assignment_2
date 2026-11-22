@@ -53,6 +53,21 @@
         (cons (node-value t)
               (walk (node-left t) (walk (node-right t) acc))))))
 
+;; (postorder tree) -> list
+;; Returns the values of tree in postorder: left subtree, right subtree, node.
+;; Reading: (walk t acc) gives the postorder values of t followed by acc.
+;; Walking () gives acc unchanged. Walking a node first puts the node's
+;; value in front of acc, then walks the right subtree onto that, and then
+;; walks the left subtree onto the result, so the node comes out after both
+;; subtrees. acc holds the values that come after t in the output. The
+;; outer call to walk is a tail call, and no append is needed.
+(define (postorder tree)
+  (let walk ([t tree] [acc '()])
+    (if (null? t)
+        acc
+        (walk (node-left t)
+              (walk (node-right t) (cons (node-value t) acc))))))
+
 ;; (print-inorder tree) -> prints one line
 ;; S1.a: prints the inorder list of tree with display, then a newline.
 ;; Reading: not recursive itself; inorder builds the list and this function
