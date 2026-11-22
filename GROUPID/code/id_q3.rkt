@@ -90,3 +90,16 @@
   (newline)
   (display (postorder tree))
   (newline))
+
+;; (height tree) -> number
+;; Returns the height of tree, so a single node has height 1.
+;; Reading: the height of () is 0; the height of a node is 1 plus the
+;; larger of the heights of its left and right subtrees.
+;; This follows the definition directly. It is not tail-recursive (the + and
+;; max run after both calls return); the recursion only goes as deep as the
+;; tree is tall.
+(define (height tree)
+  (if (null? tree)
+      0
+      (+ 1 (max (height (node-left tree))
+                (height (node-right tree))))))
