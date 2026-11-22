@@ -32,3 +32,23 @@
               out
               (flip (cdr left) (cons (car left) out))))
         (loop (cdr items) (cons (f (car items)) acc)))))
+
+;; (insert-if-short x lst n) -> list
+;; Puts x at the front of every list whose length is less than n, at every
+;; level of nesting, lst itself included. A length is always that of the
+;; original list, counted before x is put in.
+;; Reading: an atom element is left as it is. A list (() included) is
+;; handled by first applying the same rule to each of its elements with
+;; my-map, then putting x in front if its original my-length is less than
+;; n. So () has nothing to process and becomes (x) exactly when 0 < n.
+;; The recursion goes only as deep as the nesting; long lists are walked by
+;; my-map and my-length, which are both tail-recursive.
+(define (insert-if-short x lst n)
+  (let ([new-items (my-map (lambda (item)
+                             (if (or (null? item) (pair? item)) ; a sublist
+                                 (insert-if-short x item n)
+                                 item))
+                           lst)])
+    (if (< (my-length lst) n)
+        (cons x new-items)
+        new-items)))
