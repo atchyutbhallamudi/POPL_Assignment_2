@@ -1,5 +1,5 @@
 :- use_module(library(plunit)).
-:- ensure_loaded('../code/id_q2.pl').
+:- ensure_loaded('../code/36_q2.pl').
 
 :- begin_tests(p2).
 

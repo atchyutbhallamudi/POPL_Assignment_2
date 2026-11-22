@@ -1,14 +1,14 @@
 #lang racket/base
-;; Tests for S1, code/id_q3.rkt, run the way the grader runs it.
+;; Tests for S1, code/36_q3.rkt, run the way the grader runs it.
 ;; For each case the code file is copied unchanged to a temp file, the
 ;; grader-style text (tree definitions and calls) is added at the end, and
 ;; `racket <copy>` is run. The whole result is compared exactly: stdout must
 ;; be the expected lines, each ending in one newline, stderr must be empty
 ;; and the exit code must be 0.
-;; Run from GROUPID:  raco test tests/test_q3.rkt
+;; Run from 36:  raco test tests/test_q3.rkt
 (require rackunit racket/port racket/file racket/system racket/runtime-path)
 
-(define-runtime-path code-file "../code/id_q3.rkt")
+(define-runtime-path code-file "../code/36_q3.rkt")
 
 (define racket-exe
   (or (find-executable-path "racket")

@@ -1,12 +1,12 @@
 ---
 name: scheme-dev
-description: "Racket 8.x (#lang racket/base) rules for the CS F301 Assignment 2 Scheme problems S1 (id_q3.rkt) and S2 (id_q4.rkt): allowed built-ins, naming and comment conventions, how to run and test in WSL, a self-review checklist and common AI mistakes in Scheme."
+description: "Racket 8.x (#lang racket/base) rules for the CS F301 Assignment 2 Scheme problems S1 (36_q3.rkt) and S2 (36_q4.rkt): allowed built-ins, naming and comment conventions, how to run and test in WSL, a self-review checklist and common AI mistakes in Scheme."
 ---
 
 # scheme-dev
 
-Use this for all Scheme work in this repo: `GROUPID/code/id_q3.rkt` (S1),
-`GROUPID/code/id_q4.rkt` (S2) and their tests in `GROUPID/tests/`.
+Use this for all Scheme work in this repo: `36/code/36_q3.rkt` (S1),
+`36/code/36_q4.rkt` (S2) and their tests in `36/tests/`.
 
 ## 1. Language and version
 
@@ -15,7 +15,7 @@ Use this for all Scheme work in this repo: `GROUPID/code/id_q3.rkt` (S1),
   not `#lang scheme`, never missing.
 - A code file contains only definitions and comments. Nothing is called at the
   top level and nothing is printed when the file is loaded, so
-  `racket id_q3.rkt` prints nothing. The grader appends its own calls (and its
+  `racket 36_q3.rkt` prints nothing. The grader appends its own calls (and its
   own example data) to the end of the file.
 - No `provide`, `require`, `module+` or other module forms in code files.
 - Work one unit at a time (one function, one test file or one review), as the
@@ -23,7 +23,7 @@ Use this for all Scheme work in this repo: `GROUPID/code/id_q3.rkt` (S1),
 
 ## 2. Allowed built-ins (from the assignment PDF)
 
-Only these may appear in `code/id_q3.rkt` and `code/id_q4.rkt`:
+Only these may appear in `code/36_q3.rkt` and `code/36_q4.rkt`:
 
 | Group | Allowed |
 |---|---|
@@ -120,20 +120,20 @@ racket --version          # must say 8.x
 The repo sits on the Windows drive. Quote the path, because it has spaces:
 
 ```bash
-cd "/mnt/c/<path to repo>/GROUPID"
+cd "/mnt/c/<path to repo>/36"
 ```
 
 **a) Load check.** The file must load and print nothing:
 
 ```bash
-racket code/id_q3.rkt; echo "exit=$?"     # expect only: exit=0
+racket code/36_q3.rkt; echo "exit=$?"     # expect only: exit=0
 ```
 
 **b) Grader-style run.** Copy the file, append calls the way the grader does,
 and run the copy. Never put these calls in the real file:
 
 ```bash
-cp code/id_q3.rkt /tmp/q3_run.rkt
+cp code/36_q3.rkt /tmp/q3_run.rkt
 cat >> /tmp/q3_run.rkt <<'EOF'
 (define t3 '(a (b () ()) (c () ())))
 (print-all-traversals t3)
@@ -174,7 +174,7 @@ The core of `tests/test_q3.rkt`:
 ```racket
 #lang racket/base
 (require rackunit racket/port racket/file racket/system racket/runtime-path)
-(define-runtime-path code-file "../code/id_q3.rkt")
+(define-runtime-path code-file "../code/36_q3.rkt")
 (define code-text (call-with-input-file code-file port->string))
 (define racket-exe (find-executable-path "racket"))
 
@@ -222,7 +222,7 @@ it.
 reading the code:
 
 ```bash
-grep -nE "\((append|reverse|length|map|filter|member|memq|list-ref|list-tail|set!|set-[a-z-]+!|vector[a-z-]*|hash[a-z-]*|string[a-z-]*|for[a-z*/-]*|do|when|unless|case|equal\?|eqv\?|apply|foldl|foldr|first|rest|empty\?|add1|sub1|/|quotient|min|abs|printf|format|write|print|void|error)[] )]" code/id_q3.rkt
+grep -nE "\((append|reverse|length|map|filter|member|memq|list-ref|list-tail|set!|set-[a-z-]+!|vector[a-z-]*|hash[a-z-]*|string[a-z-]*|for[a-z*/-]*|do|when|unless|case|equal\?|eqv\?|apply|foldl|foldr|first|rest|empty\?|add1|sub1|/|quotient|min|abs|printf|format|write|print|void|error)[] )]" code/36_q3.rkt
 ```
 
 Expect no output. A hit inside a comment can be ignored.

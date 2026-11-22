@@ -1,11 +1,11 @@
-% Tests for P1 (code/id_q1.pl). Run from GROUPID:
+% Tests for P1 (code/36_q1.pl). Run from 36:
 % swipl -q -s tests/test_q1.pl -g run_tests -t halt
 % Expected values are worked out by hand, not computed by the code under test.
 :- use_module(library(plunit)).
 :- use_module(library(aggregate)).
 
 :- begin_tests(q1).
-:- consult('../code/id_q1.pl').
+:- consult('../code/36_q1.pl').
 
 % clue_case(N, Expected, Sol)
 % Sol is a full candidate on which clue N should hold (Expected = holds)

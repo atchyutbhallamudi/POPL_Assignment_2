@@ -19,13 +19,13 @@ From the repository root, check the runtime and load the P2 source. A successful
 
 ```sh
 swipl --version
-swipl -q -f GROUPID/code/id_q2.pl -t halt
+swipl -q -f 36/code/36_q2.pl -t halt
 ```
 
 For each code unit, run a focused goal through the same source entry point. When the named predicate exists, for example, run:
 
 ```powershell
-swipl -q -f GROUPID/code/id_q2.pl -g "generate_equation([2,4,8], E), atom_string('2*4=8', Expected), string(E), E == Expected" -t halt
+swipl -q -f 36/code/36_q2.pl -g "generate_equation([2,4,8], E), atom_string('2*4=8', Expected), string(E), E == Expected" -t halt
 ```
 
 Use a success goal that checks the expected value or shape. For a predicate expected to fail, use a ground input and negate the call in the test goal so the test succeeds only when the call fails. Read diagnostics as well as the exit status, and report the focused check's result.
