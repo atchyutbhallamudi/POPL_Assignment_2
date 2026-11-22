@@ -118,3 +118,13 @@
       [(null? t) acc]
       [(and (null? (node-left t)) (null? (node-right t))) (+ acc 1)]
       [else (walk (node-right t) (walk (node-left t) acc))])))
+
+;; (print-height-and-leaves tree) -> prints one line
+;; S1.c: prints the list (height leaf-count) of tree with display, then a
+;; newline.
+;; Reading: not recursive itself; height and count-leaves do the work and
+;; this function puts the two numbers in a list and prints it. (newline) is
+;; the last expression, so a top-level call prints nothing extra.
+(define (print-height-and-leaves tree)
+  (display (list (height tree) (count-leaves tree)))
+  (newline))
