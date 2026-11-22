@@ -74,3 +74,12 @@ clue(8, Sol) :-
     member(p(_, Dept, Lang, data), Sol),
     Dept == research,
     Lang \== javascript.
+
+% satisfies(+Active, +Sol)
+% True when every clue number in the list Active holds in Sol, a fully
+% filled-in candidate. Clues not in Active are ignored, not negated.
+% forall/2 succeeds when no member N of Active makes clue(N, Sol) fail, so
+% an empty Active list is satisfied by every Sol. Succeeds at most once and
+% binds nothing.
+satisfies(Active, Sol) :-
+    forall(member(N, Active), clue(N, Sol)).
