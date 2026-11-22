@@ -52,3 +52,15 @@
     (if (< (my-length lst) n)
         (cons x new-items)
         new-items)))
+
+;; (print-insert-result) -> prints one line
+;; Reads x, then lst, then n from standard input and prints
+;; (insert-if-short x lst n) followed by a newline, with no prompt.
+;; Reading: not recursive; let* makes the three reads happen in this order,
+;; and the result is printed once at the end.
+(define (print-insert-result)
+  (let* ([x (read)]
+         [lst (read)]
+         [n (read)])
+    (display (insert-if-short x lst n))
+    (newline)))
