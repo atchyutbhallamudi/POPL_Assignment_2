@@ -76,6 +76,11 @@ clue(8, Sol) :-
     Dept == research,
     Lang \== javascript.
 
+% CLUE 9: The friend who prefers the AI project likes Python.
+clue(9, Sol) :-
+    member(p(_, _, Lang, 'AI'), Sol),
+    Lang == python.
+
 % satisfies(+Active, +Sol)
 % True when every clue number in the list Active holds in Sol, a fully
 % filled-in candidate. Clues not in Active are ignored, not negated.
