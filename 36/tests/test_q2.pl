@@ -11,6 +11,8 @@ equation_case([2,4,8], ["2*4=8"], 1).
 equation_case([2,3,4], [], 0).
 equation_case([], [], 0).
 equation_case([5], [], 0).
+equation_case([0,0], ["0=0"], 1).
+equation_case([0,2,0], ["0*2=0", "0/2=0", "0=2*0"], 3).
 
 test(generate_valid, [forall(equation_case(Numbers, [First|Rest], _))]) :-
     once(generate_equation(Numbers, Equation)),
@@ -36,8 +38,18 @@ test(inexact_division, [fail]) :-
 test(zero_divisor, [fail]) :-
     expression_tree([8,0], op('/', _, _), _).
 
-test(right_child_with_equal_precedence, [true(Texts == ["1+(2+3)"])]) :-
-    Tree = op('+', num(1), op('+', num(2), num(3))),
+% Each tree must render as exactly the corresponding canonical string.
+parenthesis_case(op('*', op('+', num(4), num(2)), num(3)), "(4+2)*3").
+parenthesis_case(op('+', num(4), op('*', num(2), num(3))), "4+2*3").
+parenthesis_case(op('*', op('/', num(8), num(4)), num(2)), "8/4*2").
+parenthesis_case(op('/', num(8), op('*', num(4), num(2))), "8/(4*2)").
+parenthesis_case(op('-', op('-', num(1), num(2)), num(3)), "1-2-3").
+parenthesis_case(op('-', num(1), op('-', num(2), num(3))), "1-(2-3)").
+parenthesis_case(op('+', num(1), op('+', num(2), num(3))), "1+(2+3)").
+parenthesis_case(op('+', op('+', num(1), num(2)), num(3)), "1+2+3").
+
+test(canonical_parentheses, [forall(parenthesis_case(Tree, Expected)),
+                             true(Texts == [Expected])]) :-
     findall(Text, expression_text(Tree, Text, _), Texts).
 
 :- end_tests(p2).
