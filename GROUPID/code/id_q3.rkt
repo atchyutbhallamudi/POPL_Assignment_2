@@ -36,3 +36,12 @@
         acc
         (walk (node-left t)
               (cons (node-value t) (walk (node-right t) acc))))))
+
+;; (print-inorder tree) -> prints one line
+;; S1.a: prints the inorder list of tree with display, then a newline.
+;; Reading: not recursive itself; inorder builds the list and this function
+;; only prints it. (newline) is the last expression, so the function
+;; returns nothing and a top-level call prints nothing extra.
+(define (print-inorder tree)
+  (display (inorder tree))
+  (newline))
