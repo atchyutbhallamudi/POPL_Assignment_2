@@ -53,6 +53,30 @@
         (cons x new-items)
         new-items)))
 
+;; (make-inserter x len-ok?) -> function of one list
+;; Returns a function that takes a list and puts x at the front of every
+;; list, at every level of nesting and the given list included, whose
+;; length makes len-ok? true. len-ok? takes one number, and the length it
+;; gets is always that of the original list, counted before x is put in.
+;; Reading: the returned function leaves an atom as it is. A list (()
+;; included) is handled by first applying the same function to each of its
+;; elements with my-map, then putting x in front if len-ok? is true of its
+;; original my-length.
+;; The recursion goes only as deep as the nesting; long lists are walked by
+;; my-map and my-length, which are both tail-recursive.
+(define (make-inserter x len-ok?)
+  (letrec ([insert
+            (lambda (lst)
+              (let ([new-items (my-map (lambda (item)
+                                         (if (or (null? item) (pair? item)) ; a sublist
+                                             (insert item)
+                                             item))
+                                       lst)])
+                (if (len-ok? (my-length lst))
+                    (cons x new-items)
+                    new-items)))])
+    insert))
+
 ;; (print-insert-result) -> prints one line
 ;; Reads x, then lst, then n from standard input and prints
 ;; (insert-if-short x lst n) followed by a newline, with no prompt.
